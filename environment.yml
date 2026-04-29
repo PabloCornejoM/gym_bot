@@ -1,0 +1,12 @@
+# conda env create -f environment.yml
+
+name: gym_bot
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+    - playwright
+    - requests
+    - python-dotenv

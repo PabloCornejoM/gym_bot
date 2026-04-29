@@ -1,0 +1,11 @@
+# Environment
+.env
+gym_bot/
+__pycache__/
+*.pyc
+
+# Screenshots generated at runtime
+*.png
+
+# Logs
+*.log
