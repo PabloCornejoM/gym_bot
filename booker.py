@@ -1,6 +1,5 @@
-import asyncio
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
 
@@ -12,13 +11,13 @@ log = logging.getLogger("GymBot.booker")
 
 
 async def book(slot_override: str | None = None) -> None:
-    today = datetime.now()
+    today = datetime.now() + timedelta(days=0)
     date_iso = today.strftime("%Y-%m-%d")
     day = str(today.day)
     log.info(f"Booking for: {today.strftime('%d/%m/%Y')}")
 
     async with async_playwright() as playwright:
-        chromium = await playwright.chromium.launch(headless=config.HEADLESS, slow_mo=500)
+        chromium = await playwright.chromium.launch(headless=config.HEADLESS)
         context = await chromium.new_context(
             viewport={"width": 1280, "height": 900},
             user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
@@ -51,5 +50,4 @@ async def book(slot_override: str | None = None) -> None:
             notifier.send_photo("error.png", f"GymBot failed — {date_iso}\n{exc}")
             raise
         finally:
-            await asyncio.sleep(3)
             await chromium.close()
